@@ -34,3 +34,5 @@ Tenga en cuenta que un médico puede tener varias especialiades y que una especi
 (5%) Implemente las pruebas para el método _createEspecialidad_ del servicio de especialidad. Asegúrese de crear dos pruebas: una donde la especialidad se crea correctamente y otra donde se lanza una excepción de negocio por la violación de la regla de negocio.
 
 (10%) Implemente las pruebas para el método _addEspecialidad_ del servicio de la asociación. Asegúrese de crear tres pruebas: una donde la especialidad se agrega correctamente al médico; otra donde se lanza una excepción de negocio porque el médico no existe; y otra donde se lanza una excepción porque la especidad no existe.
+
+Jose Rojas 
