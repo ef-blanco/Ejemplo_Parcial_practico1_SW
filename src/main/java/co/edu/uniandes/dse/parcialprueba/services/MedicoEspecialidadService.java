@@ -2,6 +2,7 @@ package co.edu.uniandes.dse.parcialprueba.services;
 
 import java.util.Optional;
 
+import org.modelmapper.spi.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.uniandes.dse.parcialprueba.entities.EspecialidadEntity;
 import co.edu.uniandes.dse.parcialprueba.entities.MedicoEntity;
 import co.edu.uniandes.dse.parcialprueba.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.parcialprueba.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.parcialprueba.repositories.EspecialidadRepository;
 import co.edu.uniandes.dse.parcialprueba.repositories.MedicoRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -40,4 +42,24 @@ public class MedicoEspecialidadService
         return medicoEntity.get();
     }
 
+
+    @Transactional
+	public EspecialidadEntity getEspecialidad(Long medicoId, Long especialidadId)
+			throws EntityNotFoundException, IllegalOperationException 
+    {
+		log.info("Inicia proceso de consultar una especialidad del medico con id = {0}", medicoId);
+		Optional<EspecialidadEntity> especialidadEntity = especialidadRepository.findById(especialidadId);
+		Optional<MedicoEntity> medicoEntity = medicoRepository.findById(medicoId);
+
+		if (especialidadEntity.isEmpty())
+			throw new EntityNotFoundException("La especialidad no se encontro");
+
+		if (medicoEntity.isEmpty())
+			throw new EntityNotFoundException("El medico no se encontro");
+		log.info("Termina proceso de consultar una especialidad del medico con id = {0}", medicoId);
+		if (!medicoEntity.get().getEspecialidades().contains(especialidadEntity.get()))
+			throw new IllegalOperationException("La especialidad no esta asociada al medico");
+		
+		return especialidadEntity.get();
+	}
 }
